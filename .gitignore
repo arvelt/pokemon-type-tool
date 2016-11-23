@@ -1,3 +1,9 @@
 *.pyc
 .cache
 __pychache__
+lib/
+gae/
+.DS_Stroe
+
+# startup script
+run.sh
