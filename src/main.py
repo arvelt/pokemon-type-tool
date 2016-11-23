@@ -7,11 +7,19 @@ u"""
 """
 
 class Type(object):
+
+    """No Change!
+    If change bellow, change cls.type_table value.
+    """
     NORMAL_EFFECT = 0
     SUPER_EFFECT = 1
     FEW_EFFECT = 2
-    DOUBLE_SUPER_EFFECT = 4
+    """end
+    """
+
     NOTHING_EFFECT = 9
+    DOUBLE_SUPER_EFFECT = 4
+    DOUBLE_FEW_EFFECT = 5
 
     NORMAL = 0
     FIRE = 1
@@ -66,6 +74,14 @@ class Type(object):
                 if cls.check_effect( _type , target_type1) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1) == cls.DOUBLE_SUPER_EFFECT:
                     super_types.append(_type)
             return super_types
+        if length == 2:
+            target_type1 = args[0]
+            target_type2 = args[1]
+            super_types = []
+            for _type in xrange(18):
+                if cls.check_effect( _type , target_type1, target_type2) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1, target_type2) == cls.DOUBLE_SUPER_EFFECT:
+                    super_types.append(_type)
+            return super_types
 
     u"""
     return True or False or None
@@ -81,7 +97,6 @@ class Type(object):
             target_type2 = args[1]
             type1 = cls.type_table[_type][target_type1]
             type2 = cls.type_table[_type][target_type2]
-
             def is_nothing(_type):
                 return _type == cls.NOTHING_EFFECT
 
@@ -97,18 +112,21 @@ class Type(object):
             elif is_super(type1) and is_super(type2):
                 # 4倍
                 return cls.DOUBLE_SUPER_EFFECT
+            elif is_few(type1) and is_few(type2):
+                # 1/4倍
+                return cls.DOUBLE_FEW_EFFECT
             elif is_super(type1) and is_few(type2):
                 # 打ち消し
-                return cls.NORMAL
+                return cls.NORMAL_EFFECT
             elif is_super(type2) and is_few(type1):
                 # 打ち消し
-                return cls.NORMAL
+                return cls.NORMAL_EFFECT
             elif is_super(type1) or is_super(type2):
                 # こうかはばつぐん
                 return cls.SUPER_EFFECT
             elif is_few(type1) or is_few(type2):
                 # こうかはいまひとつ
-                return cls.SUPER_EFFECT
+                return cls.FEW_EFFECT
             else:
                 return cls.NORMAL_EFFECT
         else:

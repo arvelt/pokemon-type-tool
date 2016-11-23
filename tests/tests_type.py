@@ -23,7 +23,7 @@ class TestType(object):
     def test_table_normal_effective(self):
         assert Type.type_table[Type.GROUND][Type.GHOST] == Type.NORMAL_EFFECT
 
-    def test_check_effect1(self):
+    def test_check_effect(self):
         assert Type.check_effect(Type.ELECTRIC, Type.WATER, Type.FLYING) == Type.DOUBLE_SUPER_EFFECT  # ギャラドスにかみなり
         assert Type.check_effect(Type.ICE, Type.DRAGON, Type.FLYING) == Type.DOUBLE_SUPER_EFFECT  # カイリューにこおり
         assert Type.check_effect(Type.GROUND, Type.GHOST, Type.POISON) == Type.SUPER_EFFECT  # ゲンガーにじめん
@@ -31,6 +31,16 @@ class TestType(object):
         assert Type.check_effect(Type.ROCK, Type.STEEL, Type.FLYING) == Type.NORMAL_EFFECT  # エアームドにいわ
         assert Type.check_effect(Type.ELECTRIC, Type.ROCK, Type.GROUND) == Type.NOTHING_EFFECT  # サイドンにじめん
         assert Type.check_effect(Type.DRAGON, Type.WATER, Type.FAIRY) == Type.NOTHING_EFFECT  # マリルリにドラゴン
+
+        # オニドリルに？
+        assert Type.check_effect(Type.FIGHTING, Type.NORMAL, Type.FLYING) == Type.NORMAL_EFFECT
+        assert Type.check_effect(Type.ELECTRIC, Type.NORMAL, Type.FLYING) == Type.SUPER_EFFECT
+        assert Type.check_effect(Type.ICE, Type.NORMAL, Type.FLYING) == Type.SUPER_EFFECT
+        assert Type.check_effect(Type.ROCK, Type.NORMAL, Type.FLYING) == Type.SUPER_EFFECT
+        assert Type.check_effect(Type.GRASS, Type.NORMAL, Type.POISON) == Type.FEW_EFFECT
+
+        # フシギバナに？
+        assert Type.check_effect(Type.GROUND, Type.GRASS, Type.POISON) == Type.NORMAL_EFFECT
 
     def test_get_super_effective1(self):
         assert Type.get_super_effective(Type.NORMAL) == [Type.FIGHTING]
@@ -50,3 +60,11 @@ class TestType(object):
         assert Type.get_super_effective(Type.DARK) == [Type.FIGHTING, Type.BUG, Type.FAIRY]
         assert Type.get_super_effective(Type.STEEL) == [Type.FIRE, Type.FIGHTING, Type.GROUND]
         assert Type.get_super_effective(Type.FAIRY) == [Type.POISON, Type.STEEL]
+
+    def test_get_super_effective2(self):
+        assert Type.get_super_effective(Type.NORMAL, Type.FLYING) == [Type.ELECTRIC, Type.ICE, Type.ROCK]  # オニドリル
+        assert Type.get_super_effective(Type.GRASS, Type.POISON) == [Type.FIRE, Type.ICE, Type.FLYING, Type.PSYCHIC]  # フシギバナ
+        assert Type.get_super_effective(Type.DRAGON, Type.FLYING) == [Type.ICE, Type.ROCK, Type.DRAGON, Type.FAIRY]  # カイリュー
+        assert Type.get_super_effective(Type.GRASS, Type.BUG) == [Type.FIRE, Type.ICE, Type.POISON, Type.FLYING, Type.BUG, Type.ROCK]  # パラセクト
+        assert Type.get_super_effective(Type.ROCK, Type.GROUND) == [Type.WATER, Type.GRASS, Type.ICE, Type.FIGHTING, Type.GROUND, Type.STEEL]  # イワーク
+        assert Type.get_super_effective(Type.GHOST, Type.POISON) == [Type.GROUND, Type.PSYCHIC, Type.GHOST, Type.DARK]  # ゲンガー

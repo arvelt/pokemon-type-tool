@@ -1,4 +1,4 @@
 #!/bin/bash
 
 export PYTHONPATH=/src:$PYTHONPATH
-py.test tests/*
+py.test $1 tests/*
