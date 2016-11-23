@@ -19,11 +19,10 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from .form import TypesForm
+from src.main import Type
 
 class IndexView(TemplateView):
     template_name = "index.html"
-    form_class = TypesForm
-
     _types = [
         {'value': 0, 'name': u'ノーマル'},
         {'value': 1, 'name': u'ほのお'},
@@ -46,10 +45,33 @@ class IndexView(TemplateView):
     ]
 
     def get(self, request, *args, **kwargs):
-        return self.render_to_response({'types': self._types})
+        return self.render_to_response({
+            'types': self._types,
+            'super_types_names': [],
+            'selected1': 0,
+            'selected2': 19,
+            })
 
     def post(self, request, *args, **kwargs):
         form = TypesForm(request.POST)
+        super_types_names = []
+        selected1 = 0
+        selected2 = 19
         if form.is_valid():
-            logging.debug('GOT DATA %r', form.cleaned_data)
-        return self.render_to_response({'types': self._types})
+            type1 = form.cleaned_data['type1']
+            type2 = form.cleaned_data['type2']
+            if type2 == 19:
+                super_type = Type.get_super_effective(type1)
+            else:
+                super_type = Type.get_super_effective(type1, type2)
+            for _type_value in super_type:
+                _type = [n for n in self._types if n['value'] == _type_value][0]
+                super_types_names.append(_type)
+            selected1 = type1
+            selected2 = type2
+        return self.render_to_response({
+            'types': self._types,
+            'super_types_names': super_types_names,
+            'selected1': selected1,
+            'selected2': selected2,
+            })
