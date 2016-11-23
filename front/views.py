@@ -49,18 +49,18 @@ class IndexView(TemplateView):
             'types': self._types,
             'super_types_names': [],
             'selected1': 0,
-            'selected2': 19,
+            'selected2': 18,
             })
 
     def post(self, request, *args, **kwargs):
         form = TypesForm(request.POST)
         super_types_names = []
         selected1 = 0
-        selected2 = 19
+        selected2 = 18
         if form.is_valid():
             type1 = form.cleaned_data['type1']
             type2 = form.cleaned_data['type2']
-            if type2 == 19:
+            if type2 == 18:
                 super_type = Type.get_super_effective(type1)
             else:
                 super_type = Type.get_super_effective(type1, type2)
