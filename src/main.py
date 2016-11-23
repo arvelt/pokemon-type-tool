@@ -57,8 +57,15 @@ class Type(object):
     return List of int
     """
     @classmethod
-    def get_super_effective(cls, target_type1, target_type2):
-        return 0
+    def get_super_effective(cls, *args):
+        length = len(args)
+        if length == 1:
+            target_type1 = args[0]
+            super_types = []
+            for _type in xrange(18):
+                if cls.check_effect( _type , target_type1) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1) == cls.DOUBLE_SUPER_EFFECT:
+                    super_types.append(_type)
+            return super_types
 
     u"""
     return True or False or None

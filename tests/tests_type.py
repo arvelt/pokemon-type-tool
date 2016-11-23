@@ -32,5 +32,21 @@ class TestType(object):
         assert Type.check_effect(Type.ELECTRIC, Type.ROCK, Type.GROUND) == Type.NOTHING_EFFECT  # サイドンにじめん
         assert Type.check_effect(Type.DRAGON, Type.WATER, Type.FAIRY) == Type.NOTHING_EFFECT  # マリルリにドラゴン
 
-    def test_get_super_effective(self):
-        pass
+    def test_get_super_effective1(self):
+        assert Type.get_super_effective(Type.NORMAL) == [Type.FIGHTING]
+        assert Type.get_super_effective(Type.FIRE) == [Type.WATER, Type.GROUND, Type.ROCK]
+        assert Type.get_super_effective(Type.WATER) == [Type.ELECTRIC, Type.GRASS]
+        assert Type.get_super_effective(Type.ELECTRIC) == [Type.GROUND]
+        assert Type.get_super_effective(Type.GRASS) == [Type.FIRE, Type.ICE, Type.POISON, Type.FLYING, Type.BUG]
+        assert Type.get_super_effective(Type.ICE) == [Type.FIRE, Type.FIGHTING, Type.ROCK, Type.STEEL]
+        assert Type.get_super_effective(Type.FIGHTING) == [Type.FLYING, Type.PSYCHIC, Type.FAIRY]
+        assert Type.get_super_effective(Type.POISON) == [Type.GROUND, Type.PSYCHIC]
+        assert Type.get_super_effective(Type.GROUND) == [Type.WATER, Type.GRASS, Type.ICE]
+        assert Type.get_super_effective(Type.FLYING) == [Type.ELECTRIC, Type.ICE, Type.ROCK]
+        assert Type.get_super_effective(Type.PSYCHIC) == [Type.BUG, Type.GHOST, Type.DARK]
+        assert Type.get_super_effective(Type.BUG) == [Type.FIRE, Type.FLYING, Type.ROCK]
+        assert Type.get_super_effective(Type.GHOST) == [Type.GHOST, Type.DARK]
+        assert Type.get_super_effective(Type.DRAGON) == [Type.ICE, Type.DRAGON, Type.FAIRY]
+        assert Type.get_super_effective(Type.DARK) == [Type.FIGHTING, Type.BUG, Type.FAIRY]
+        assert Type.get_super_effective(Type.STEEL) == [Type.FIRE, Type.FIGHTING, Type.GROUND]
+        assert Type.get_super_effective(Type.FAIRY) == [Type.POISON, Type.STEEL]
