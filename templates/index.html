@@ -1,8 +1,24 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Hello django template.</h1>
+    <h1>ポケモンに有効なわざのタイプをしりたい</h1>
+    <form method='post'>
+        {% csrf_token %}
+        <select id='type1' name='type1'>
+            {% for type in types %}
+                <option value='{{ type.value }}'>{{ type.name }}</>
+            {% endfor %}
+        </select>
+        <select id='type2' name='type2'>
+            {% for type in types %}
+                <option value='{{type.value}}'>{{ type.name }}</>
+            {% endfor %}
+                <option value='19' selected='selected'>なし</>
+        </select>
+        <input type='submit' value='このタイプに有効なタイプは？'>
+    </form>
 </body>
 </html>
