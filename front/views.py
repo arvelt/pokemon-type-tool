@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.generic import TemplateView
 
+class IndexView(TemplateView):
+    template_name = "index.html"
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the front index.")
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
