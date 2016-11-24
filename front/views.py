@@ -19,30 +19,10 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from .form import TypesForm
-from src.main import Type
+from src.main import Type, TYPES
 
 class IndexView(TemplateView):
     template_name = "index.html"
-    _types = [
-        {'value': 0, 'name': u'ノーマル'},
-        {'value': 1, 'name': u'ほのお'},
-        {'value': 2, 'name': u'みず'},
-        {'value': 3, 'name': u'でんき'},
-        {'value': 4, 'name': u'くさ'},
-        {'value': 5, 'name': u'こおり'},
-        {'value': 6, 'name': u'かくとう'},
-        {'value': 7, 'name': u'どく'},
-        {'value': 8, 'name': u'じめん'},
-        {'value': 9, 'name': u'ひこう'},
-        {'value': 10, 'name': u'エスパー'},
-        {'value': 11, 'name': u'むし'},
-        {'value': 12, 'name': u'いわ'},
-        {'value': 13, 'name': u'ゴースト'},
-        {'value': 14, 'name': u'ドラゴン'},
-        {'value': 15, 'name': u'あく'},
-        {'value': 16, 'name': u'はがね'},
-        {'value': 17, 'name': u'フェアリー'},
-    ]
 
     def get(self, request, *args, **kwargs):
         form = TypesForm(initial={
@@ -57,23 +37,17 @@ class IndexView(TemplateView):
     def post(self, request, *args, **kwargs):
         form = TypesForm(request.POST)
         super_types_names = []
-        selected1 = 0
-        selected2 = 18
         if form.is_valid():
             type1 = form.cleaned_data['type1']
             type2 = form.cleaned_data['type2']
-            if type2 == 18:
+            if type2 == 99:
                 super_type = Type.get_super_effective(type1)
             else:
                 super_type = Type.get_super_effective(type1, type2)
             for _type_value in super_type:
-                _type = [n for n in self._types if n['value'] == _type_value][0]
-                super_types_names.append(_type)
-            selected1 = type1
-            selected2 = type2
+                _type_name = [n for v, n in TYPES if v == _type_value][0]
+                super_types_names.append(_type_name)
         return self.render_to_response({
-            'types': self._types,
             'super_types_names': super_types_names,
-            'selected1': selected1,
-            'selected2': selected2,
+            'form': form,
             })
