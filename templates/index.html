@@ -8,15 +8,17 @@
     <form method='post'>
         {% csrf_token %}
         <select id='type1' name='type1'>
-            {% for type in types %}
-                <option value='{{ type.value }}' {% if type.value == selected1 %}selected="selected"{% endif %}>{{ type.name }}</>
+            {% for value, name in form.type1.field.choices %}
+                {% if value != 99 %}
+                    <option value='value' {% if value == form.type1.value %}selected='selected'{% endif %}>{{name}}</option>
+                {% endif %}
             {% endfor %}
         </select>
+
         <select id='type2' name='type2'>
-            {% for type in types %}
-                <option value='{{type.value}}' {% if type.value == selected2 %}selected="selected"{% endif %}>{{ type.name }}</>
+            {% for value, name in form.type1.field.choices %}
+                <option value='value' {% if value == form.type2.value %}selected='selected'{% endif %}>{{name}}</option>
             {% endfor %}
-                <option value='18' {% if 18 == selected2 %}selected="selected"{% endif %}>なし</>
         </select>
         <input type='submit' value='このタイプに有効なタイプは？'>
     </form>

@@ -45,11 +45,13 @@ class IndexView(TemplateView):
     ]
 
     def get(self, request, *args, **kwargs):
+        form = TypesForm(initial={
+            'type1': 0,
+            'type2': 99,
+        })
         return self.render_to_response({
-            'types': self._types,
             'super_types_names': [],
-            'selected1': 0,
-            'selected2': 18,
+            'form': form,
             })
 
     def post(self, request, *args, **kwargs):
