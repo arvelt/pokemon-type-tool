@@ -18,8 +18,8 @@ import logging
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
-from .form import TypesForm
-from src.main import Type, TYPES
+from .forms import TypesForm
+from .models import Type, TYPES
 
 class IndexView(TemplateView):
     template_name = "index.html"

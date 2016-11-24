@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from src.main import Type
+from front.models import Type
 
 class TestType(object):
     def test_table_super_effective(self):
