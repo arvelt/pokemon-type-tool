@@ -10,14 +10,14 @@
         <select id='type1' name='type1'>
             {% for value, name in form.type1.field.choices %}
                 {% if value != 99 %}
-                    <option value='{{value}}' {% if value == form.type1.value %}selected='selected'{% endif %}>{{name}}</option>
+                    <option value='{{value}}' {% if value == form.type1.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
                 {% endif %}
             {% endfor %}
         </select>
 
         <select id='type2' name='type2'>
             {% for value, name in form.type1.field.choices %}
-                <option value='{{value}}' {% if value == form.type2.value %}selected='selected'{% endif %}>{{name}}</option>
+                <option value='{{value}}' {% if value == form.type2.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
             {% endfor %}
         </select>
         <input type='submit' value='このタイプに有効なタイプは？'></input>
