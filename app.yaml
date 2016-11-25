@@ -26,6 +26,9 @@ handlers:
 - url: .*
   script: mysite.wsgi.application
 
+automatic_scaling:
+    max_idle_instances: 1
+
 # Only pure Python libraries can be vendored
 # Python libraries that use C extensions can
 # only be included if they are part of the App Engine SDK
