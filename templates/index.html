@@ -28,5 +28,16 @@
             <div>{{ name }}</div>
         {% endfor %}
     </div>
+    <div>
+        {{% for pokemon in pokemons %}}
+            {{pokemon.id}}
+            {{pokemon.hp}}
+            {{pokemon.attack}}
+            {{pokemon.defence}}
+            {{pokemon.sp_attack}}
+            {{pokemon.sp_defence}}
+            {{pokemon.speed}}
+        {{% endfor %}}
+    </div>
 </body>
 </html>

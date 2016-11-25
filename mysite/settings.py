@@ -114,6 +114,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #         }
 #     }
 # [END db_setup]
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

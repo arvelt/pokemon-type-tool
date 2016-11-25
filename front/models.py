@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db import models
 
 u"""
 こうかはばつぐんだ！：It's super effective!
@@ -154,3 +155,15 @@ class Type(object):
                 return cls.NORMAL_EFFECT
         else:
             raise TypeError('check_effect() takes less than 4 arguments')
+
+
+class Pokemon(models.Model):
+    id = models.AutoField(primary_key=True)
+    hp = models.IntegerField()
+    attack = models.IntegerField()
+    defence = models.IntegerField()
+    sp_attack = models.IntegerField()
+    so_defence = models.IntegerField()
+    speed = models.IntegerField()
+    type1 = models.IntegerField()
+    type2 = models.IntegerField()

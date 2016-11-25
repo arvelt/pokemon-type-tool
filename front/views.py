@@ -19,7 +19,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from .forms import TypesForm
-from .models import Type, TYPES
+from .models import Pokemon, Type, TYPES
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -29,9 +29,20 @@ class IndexView(TemplateView):
             'type1': 0,
             'type2': 99,
         })
+        pokemons = [
+            Pokemon(
+                hp=255,
+                attack=100,
+                defence=100,
+                sp_attack=100,
+                so_defence=100,
+                speed=00,
+            )
+        ]
         return self.render_to_response({
             'super_types_names': [],
             'form': form,
+            'pokemons': pokemons,
             })
 
     def post(self, request, *args, **kwargs):
