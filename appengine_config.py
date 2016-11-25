@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# pip install -r requirements-vendor.txt -t lib/
 # [START vendor]
 from google.appengine.ext import vendor
 vendor.add('lib')

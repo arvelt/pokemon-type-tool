@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.db import models
+from google.appengine.ext import ndb
 
 u"""
 こうかはばつぐんだ！：It's super effective!
@@ -157,13 +157,12 @@ class Type(object):
             raise TypeError('check_effect() takes less than 4 arguments')
 
 
-class Pokemon(models.Model):
-    id = models.AutoField(primary_key=True)
-    hp = models.IntegerField()
-    attack = models.IntegerField()
-    defence = models.IntegerField()
-    sp_attack = models.IntegerField()
-    so_defence = models.IntegerField()
-    speed = models.IntegerField()
-    type1 = models.IntegerField()
-    type2 = models.IntegerField()
+class Pokemon(ndb.Model):
+    hp = ndb.IntegerProperty()
+    attack = ndb.IntegerProperty()
+    defence = ndb.IntegerProperty()
+    sp_attack = ndb.IntegerProperty()
+    so_defence = ndb.IntegerProperty()
+    speed = ndb.IntegerProperty()
+    type1 = ndb.IntegerProperty()
+    type2 = ndb.IntegerProperty()

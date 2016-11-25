@@ -29,7 +29,7 @@
         {% endfor %}
     </div>
     <div>
-        {{% for pokemon in pokemons %}}
+        {% for pokemon in pokemons %}
             {{pokemon.id}}
             {{pokemon.hp}}
             {{pokemon.attack}}
@@ -37,7 +37,7 @@
             {{pokemon.sp_attack}}
             {{pokemon.sp_defence}}
             {{pokemon.speed}}
-        {{% endfor %}}
+        {% endfor %}
     </div>
 </body>
 </html>
