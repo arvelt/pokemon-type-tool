@@ -5,30 +5,34 @@
 </head>
 <body>
     <h1>ポケモンに有効なわざのタイプをしりたい</h1>
-    <form method='post'>
-        {% csrf_token %}
-        <select id='type1' name='type1'>
-            {% for value, name in form.type1.field.choices %}
-                {% if value != 99 %}
-                    <option value='{{value}}' {% if value == form.type1.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
-                {% endif %}
-            {% endfor %}
-        </select>
+    <!-- <div>
+        <div>
+            <form method='post'>
+                {% csrf_token %}
+                <select id='type1' name='type1'>
+                    {% for value, name in form.type1.field.choices %}
+                        {% if value != 99 %}
+                            <option value='{{value}}' {% if value == form.type1.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
 
-        <select id='type2' name='type2'>
-            {% for value, name in form.type1.field.choices %}
-                <option value='{{value}}' {% if value == form.type2.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
+                <select id='type2' name='type2'>
+                    {% for value, name in form.type1.field.choices %}
+                        <option value='{{value}}' {% if value == form.type2.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
+                    {% endfor %}
+                </select>
+                <input type='submit' value='このタイプに有効なタイプは？'></input>
+            </form>
+        </div>
+        <div>
+            選択したタイプに有効なわざは？
+            {% for name in super_types_names %}
+                <div>{{ name }}</div>
             {% endfor %}
-        </select>
-        <input type='submit' value='このタイプに有効なタイプは？'></input>
-    </form>
-    <div>
-        選択したタイプに有効なわざは？
-        {% for name in super_types_names %}
-            <div>{{ name }}</div>
-        {% endfor %}
-    </div>
-<!--
+        </div>
+    </div> -->
+
     <div>
         <table>
             <thead>
@@ -44,6 +48,7 @@
                     <th>とくぼう</th>
                     <th>すばやさ</th>
                     <th>ごうけい</th>
+                    <th>ゆうこうなタイプ</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,11 +65,18 @@
                     <td>{{pokemon.sp_defence}}</td>
                     <td>{{pokemon.speed}}</td>
                     <td>{{pokemon.sum}}</td>
+                    <td>
+                        {% for name in pokemon.super_types %}
+                            {{name}}
+                        {% endfor %}
+                    </td>
+                </td>
+
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
--->
+
 </body>
 </html>
