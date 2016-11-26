@@ -28,7 +28,7 @@
             <div>{{ name }}</div>
         {% endfor %}
     </div>
-<!--
+
     <div>
         <table>
             <thead>
@@ -44,6 +44,7 @@
                     <th>とくぼう</th>
                     <th>すばやさ</th>
                     <th>ごうけい</th>
+                    <th>ゆうこうなタイプ</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,11 +61,18 @@
                     <td>{{pokemon.sp_defence}}</td>
                     <td>{{pokemon.speed}}</td>
                     <td>{{pokemon.sum}}</td>
+                    <td>
+                        {% for name in pokemon.super_types %}
+                            {{name}}
+                        {% endfor %}
+                    </td>
+                </td>
+
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
--->
+
 </body>
 </html>

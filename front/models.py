@@ -30,8 +30,20 @@ TYPES = (
     (14, u'ドラゴン'),
     (15, u'あく'),
     (16, u'はがね'),
-    (17, u'ようせい'),
+    (17, u'フェアリー'),
 )
+
+def type_value_to_name(value):
+    for v, n in TYPES:
+        if v == value:
+            return n
+    return TYPES[0][1]
+
+def type_name_to_value(name):
+    for v, n in TYPES:
+        if n == name:
+            return v
+    return TYPES[0][0]
 
 
 class Type(object):
@@ -119,12 +131,23 @@ class Type(object):
         length = len(args)
         if length == 1:
             target_type1 = args[0]
-            return cls.type_table[_type][target_type1]
+            try:
+                return cls.type_table[_type][target_type1]
+            except IndexError as e:
+                logging.error('_type %r, target_type1 %r', _type, target_type1)
+                raise e
+
         elif length == 2:
             target_type1 = args[0]
             target_type2 = args[1]
-            type1 = cls.type_table[_type][target_type1]
-            type2 = cls.type_table[_type][target_type2]
+
+            try:
+                type1 = cls.type_table[_type][target_type1]
+                type2 = cls.type_table[_type][target_type2]
+            except IndexError as e:
+                logging.error('_type %r, target_type1 %r, target_type2', _type, target_type1, target_type2)
+                raise e
+
             def is_nothing(_type):
                 return _type == cls.NOTHING_EFFECT
 
@@ -173,6 +196,7 @@ class Pokemon(ndb.Model):
     sp_defence = ndb.IntegerProperty()
     speed = ndb.IntegerProperty()
     sum = ndb.IntegerProperty()
+    super_types = ndb.StringProperty(repeated=True)
 
     @classmethod
     def find_all(cls):
@@ -200,6 +224,52 @@ class Pokemon(ndb.Model):
                 sp_defence=int(spdf),
                 speed=int(spd),
                 sum=int(_sum),
+            ))
+        return items
+
+    @classmethod
+    def find_all_with_super_type(cls):
+        client = build_client()
+        result = client.spreadsheets().values().get(
+            spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
+            range='sheet1',
+
+        ).execute()
+
+        items = []
+        for index, pkmn in enumerate(result.get('values', [])):
+            if index == 0:
+                continue
+            no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
+
+            if type2:
+                _type1 = type_name_to_value(type1)
+                _type2 = type_name_to_value(type2)
+                super_types = Type.get_super_effective(_type1, _type2)
+            else:
+                _type1 = type_name_to_value(type1)
+                super_types = Type.get_super_effective(_type1)
+
+            super_types_name = []
+            for super_type in super_types:
+                for v, n in TYPES:
+                    if v == super_type:
+                        super_types_name.append(n)
+                        break
+
+            items.append(cls(
+                no=int(no),
+                name=name,
+                type1=type1,
+                type2=type2,
+                hp=int(hp),
+                attack=int(atk),
+                defence=int(df),
+                sp_attack=int(spatk),
+                sp_defence=int(spdf),
+                speed=int(spd),
+                sum=int(_sum),
+                super_types=super_types_name
             ))
         return items
 
