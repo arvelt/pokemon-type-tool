@@ -28,5 +28,43 @@
             <div>{{ name }}</div>
         {% endfor %}
     </div>
+<!--
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>なまえ</th>
+                    <th>タイプ１</th>
+                    <th>タイプ２</th>
+                    <th>HP</th>
+                    <th>こうげき</th>
+                    <th>ぼうぎょ</th>
+                    <th>とくこう</th>
+                    <th>とくぼう</th>
+                    <th>すばやさ</th>
+                    <th>ごうけい</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pokemon in pokemons %}
+                <tr>
+                    <td>{{pokemon.no}}</td>
+                    <td>{{pokemon.name}}</td>
+                    <td>{{pokemon.type1}}</td>
+                    <td>{{pokemon.type2}}</td>
+                    <td>{{pokemon.hp}}</td>
+                    <td>{{pokemon.attack}}</td>
+                    <td>{{pokemon.defence}}</td>
+                    <td>{{pokemon.sp_attack}}</td>
+                    <td>{{pokemon.sp_defence}}</td>
+                    <td>{{pokemon.speed}}</td>
+                    <td>{{pokemon.sum}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+-->
 </body>
 </html>

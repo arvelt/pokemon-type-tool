@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+import logging
+
+from google.appengine.ext import ndb
+
+from .authorize import build_client
 
 u"""
 こうかはばつぐんだ！：It's super effective!
@@ -154,3 +159,49 @@ class Type(object):
                 return cls.NORMAL_EFFECT
         else:
             raise TypeError('check_effect() takes less than 4 arguments')
+
+
+class Pokemon(ndb.Model):
+    no = ndb.IntegerProperty(indexed=True)
+    name = ndb.StringProperty(indexed=True)
+    type1 = ndb.StringProperty(indexed=True)
+    type2 = ndb.StringProperty(indexed=True)
+    hp = ndb.IntegerProperty()
+    attack = ndb.IntegerProperty()
+    defence = ndb.IntegerProperty()
+    sp_attack = ndb.IntegerProperty()
+    sp_defence = ndb.IntegerProperty()
+    speed = ndb.IntegerProperty()
+    sum = ndb.IntegerProperty()
+
+    @classmethod
+    def find_all(cls):
+        client = build_client()
+        result = client.spreadsheets().values().get(
+            spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
+            range='sheet1',
+
+        ).execute()
+
+        items = []
+        for index, pkmn in enumerate(result.get('values', [])):
+            if index == 0:
+                continue
+            no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
+            items.append(cls(
+                no=int(no),
+                name=name,
+                type1=type1,
+                type2=type2,
+                hp=int(hp),
+                attack=int(atk),
+                defence=int(df),
+                sp_attack=int(spatk),
+                sp_defence=int(spdf),
+                speed=int(spd),
+                sum=int(_sum),
+            ))
+        return items
+
+class SericeAccountToken(ndb.Model):
+    credential = ndb.JsonProperty()
