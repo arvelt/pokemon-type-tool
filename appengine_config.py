@@ -17,3 +17,10 @@
 from google.appengine.ext import vendor
 vendor.add('lib')
 # [END vendor]
+
+# monkey-patch for ImportError: No module named pwd
+# ref: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2032
+# import os.path
+# def patched_expanduser(path):
+#     return path
+# os.path.expanduser = patched_expanduser

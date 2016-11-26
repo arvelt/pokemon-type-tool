@@ -3,7 +3,8 @@
 __pychache__
 lib/
 gae/
-.DS_Stroe
+.DS_Store
+pkmn_tool_credential.py
 
 # local script
 run.sh
