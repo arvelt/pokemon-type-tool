@@ -193,6 +193,7 @@ class Pokemon(ndb.Model):
                 name=name,
                 type1=type1,
                 type2=type2,
+                hp=int(hp),
                 attack=int(atk),
                 defence=int(df),
                 sp_attack=int(spatk),
