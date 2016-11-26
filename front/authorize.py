@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 from httplib2 import Http
 from apiclient import discovery
 
@@ -22,6 +24,7 @@ def get_credential():
 
 
 def build_client():
+    credentials = get_credential()
     http_auth = credentials.authorize(Http())
     discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
     return discovery.build('sheets', 'v4', http=http_auth, discoveryServiceUrl=discoveryUrl)

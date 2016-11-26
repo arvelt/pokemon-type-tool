@@ -274,4 +274,4 @@ class Pokemon(ndb.Model):
         return items
 
 class SericeAccountToken(ndb.Model):
-    credential = ndb.StringProperty()
+    credential = ndb.JsonProperty()
