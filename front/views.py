@@ -19,7 +19,6 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 
 from .forms import TypesForm
-from .authorize import build_client
 from .models import Pokemon, Type, TYPES
 
 
@@ -31,23 +30,9 @@ class IndexView(TemplateView):
             'type1': 0,
             'type2': 99,
         })
-        client = build_client()
-        result = client.spreadsheets().values().get(
-            spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
-            range='sheet1',
 
-        ).execute()
-        # pokemons = [
-        #     Pokemon(
-        #         hp=255,
-        #         attack=100,
-        #         defence=100,
-        #         sp_attack=100,
-        #         so_defence=100,
-        #         speed=00,
-        #     )
-        # ]
-        pokemons = result.values
+        pokemons = Pokemon.find_all()
+
         return self.render_to_response({
             'super_types_names': [],
             'form': form,
