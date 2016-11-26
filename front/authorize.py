@@ -6,7 +6,6 @@ from apiclient import discovery
 
 from google.appengine.ext import ndb
 
-
 SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 
 
@@ -15,12 +14,10 @@ def get_credential():
         from oauth2client.contrib.appengine import AppAssertionCredentials
         return AppAssertionCredentials(SCOPE)
     else:
-        from oauth2client.service_account import ServiceAccountCredentials
-        key = ndb.Key('SericeAccountToken', 'pkmn-tool-service-account')
-        entity = key.get()
-        if entity is None:
-            return None
-        return ServiceAccountCredentials.from_json_keyfile_dict(entity.credential, SCOPE)
+        # pkmn_tool_credential is returning service_account credentials.
+        from .pkmn_tool_credential import get_credential_file
+        credentials = get_credential_file()
+        return ServiceAccountCredentials.from_json_keyfile_dict(credentials, SCOPE)
 
 
 def build_client():
