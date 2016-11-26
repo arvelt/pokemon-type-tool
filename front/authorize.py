@@ -11,7 +11,7 @@ SCOPE = 'https://www.googleapis.com/auth/spreadsheets.readonly'
 def get_credential():
     if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
         from oauth2client.contrib.appengine import AppAssertionCredentials
-        return credentials = AppAssertionCredentials(SCOPE)
+        return AppAssertionCredentials(SCOPE)
     else:
         from oauth2client.service_account import ServiceAccountCredentials
         key = ndb.Key('SericeAccountToken', 'pkmn-tool-service-account')
