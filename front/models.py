@@ -33,17 +33,26 @@ TYPES = (
     (17, u'フェアリー'),
 )
 
+
 def type_value_to_name(value):
     for v, n in TYPES:
         if v == value:
             return n
     return TYPES[0][1]
 
+
 def type_name_to_value(name):
     for v, n in TYPES:
         if n == name:
             return v
     return TYPES[0][0]
+
+
+def is_valid_range(_type):
+    if (0 <= _type and _type <= 17):
+        return True
+    else:
+        return False
 
 
 class Type(object):
@@ -54,10 +63,10 @@ class Type(object):
     NORMAL_EFFECT = 0
     SUPER_EFFECT = 1
     FEW_EFFECT = 2
+    NOTHING_EFFECT = 9
     """end
     """
 
-    NOTHING_EFFECT = 9
     DOUBLE_SUPER_EFFECT = 4
     DOUBLE_FEW_EFFECT = 5
 
@@ -106,86 +115,71 @@ class Type(object):
     """
     @classmethod
     def get_super_effective(cls, type1, type2):
-        if (0 < type2 and type2 < 17):
-            return cls._get_super_effective2(type1, type2)
-        else:
-            return cls._get_super_effective1(type1)
-
-    @classmethod
-    def _get_super_effective1(cls, target_type1):
         super_types = []
         for _type in xrange(18):
-            if cls.check_effect( _type , target_type1) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1) == cls.DOUBLE_SUPER_EFFECT:
-                super_types.append(_type)
-        return super_types
-
-    @classmethod
-    def _get_super_effective2(cls, target_type1, target_type2):
-        super_types = []
-        for _type in xrange(18):
-            if cls.check_effect( _type , target_type1, target_type2) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1, target_type2) == cls.DOUBLE_SUPER_EFFECT:
+            if cls.check_effect( _type , type1, type2) == cls.SUPER_EFFECT or cls.check_effect(_type , type1, type2) == cls.DOUBLE_SUPER_EFFECT:
                 super_types.append(_type)
         return super_types
 
     u"""
-    return True or False or None
+    return SUPER_EFFECT or NORMAL_EFFECT or FEW_EFFECT or NOTHING_EFFECT
     """
     @classmethod
-    def check_effect(cls, _type, *args):
-        length = len(args)
-        if length == 1:
-            target_type1 = args[0]
-            try:
-                return cls.type_table[_type][target_type1]
-            except IndexError as e:
-                logging.error('_type %r, target_type1 %r', _type, target_type1)
-                raise e
-
-        elif length == 2:
-            target_type1 = args[0]
-            target_type2 = args[1]
-
-            try:
-                type1 = cls.type_table[_type][target_type1]
-                type2 = cls.type_table[_type][target_type2]
-            except IndexError as e:
-                logging.error('_type %r, target_type1 %r, target_type2', _type, target_type1, target_type2)
-                raise e
-
-            def is_nothing(_type):
-                return _type == cls.NOTHING_EFFECT
-
-            def is_super(_type):
-                return _type == cls.SUPER_EFFECT
-
-            def is_few(_type):
-                return _type == cls.FEW_EFFECT
-
-            if is_nothing(type1) or is_nothing(type2):
-                # こうかはない
-                return cls.NOTHING_EFFECT
-            elif is_super(type1) and is_super(type2):
-                # 4倍
-                return cls.DOUBLE_SUPER_EFFECT
-            elif is_few(type1) and is_few(type2):
-                # 1/4倍
-                return cls.DOUBLE_FEW_EFFECT
-            elif is_super(type1) and is_few(type2):
-                # 打ち消し
-                return cls.NORMAL_EFFECT
-            elif is_super(type2) and is_few(type1):
-                # 打ち消し
-                return cls.NORMAL_EFFECT
-            elif is_super(type1) or is_super(type2):
-                # こうかはばつぐん
-                return cls.SUPER_EFFECT
-            elif is_few(type1) or is_few(type2):
-                # こうかはいまひとつ
-                return cls.FEW_EFFECT
-            else:
-                return cls.NORMAL_EFFECT
+    def check_effect(cls, _type, target_type1, target_type2):
+        if is_valid_range(target_type2):
+            return cls._check_effect2(_type, target_type1, target_type2)
         else:
-            raise TypeError('check_effect() takes less than 4 arguments')
+            return cls._check_effect1(_type, target_type1)
+
+    @classmethod
+    def _check_effect1(cls, _type, target_type1):
+        if (is_valid_range(_type) and is_valid_range(target_type1)):
+            return cls.type_table[_type][target_type1]
+        else:
+            raise ValueError
+
+    @classmethod
+    def _check_effect2(cls, _type, target_type1, target_type2):
+        if is_valid_range(_type) and is_valid_range(target_type1) and is_valid_range(target_type2):
+            pass
+        else:
+            raise ValueError
+
+        type1 = cls.type_table[_type][target_type1]
+        type2 = cls.type_table[_type][target_type2]
+
+        def is_nothing(_type):
+            return _type == cls.NOTHING_EFFECT
+
+        def is_super(_type):
+            return _type == cls.SUPER_EFFECT
+
+        def is_few(_type):
+            return _type == cls.FEW_EFFECT
+
+        if is_nothing(type1) or is_nothing(type2):
+            # こうかはない
+            return cls.NOTHING_EFFECT
+        elif is_super(type1) and is_super(type2):
+            # 4倍
+            return cls.DOUBLE_SUPER_EFFECT
+        elif is_few(type1) and is_few(type2):
+            # 1/4倍
+            return cls.DOUBLE_FEW_EFFECT
+        elif is_super(type1) and is_few(type2):
+            # 打ち消し
+            return cls.NORMAL_EFFECT
+        elif is_super(type2) and is_few(type1):
+            # 打ち消し
+            return cls.NORMAL_EFFECT
+        elif is_super(type1) or is_super(type2):
+            # こうかはばつぐん
+            return cls.SUPER_EFFECT
+        elif is_few(type1) or is_few(type2):
+            # こうかはいまひとつ
+            return cls.FEW_EFFECT
+        else:
+            return cls.NORMAL_EFFECT
 
 
 class Pokemon(ndb.Model):
