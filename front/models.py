@@ -240,13 +240,9 @@ class Pokemon(ndb.Model):
                 continue
             no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
 
-            if type2:
-                _type1 = type_name_to_value(type1)
-                _type2 = type_name_to_value(type2)
-                super_types = Type.get_super_effective(_type1, _type2)
-            else:
-                _type1 = type_name_to_value(type1)
-                super_types = Type.get_super_effective(_type1)
+            _type1 = type_name_to_value(type1)
+            _type2 = type_name_to_value(type2)
+            super_types = Type.get_super_effective(_type1, _type2)
 
             super_types_name = []
             for super_type in super_types:

@@ -42,16 +42,16 @@ class IndexView(TemplateView):
     def post(self, request, *args, **kwargs):
         form = TypesForm(request.POST)
         super_types_names = []
+
         if form.is_valid():
             type1 = form.cleaned_data['type1']
             type2 = form.cleaned_data['type2']
-            if type2 == 99:
-                super_type = Type.get_super_effective(type1)
-            else:
-                super_type = Type.get_super_effective(type1, type2)
+            super_type = Type.get_super_effective(type1, type2)
+
             for _type_value in super_type:
                 _type_name = [n for v, n in TYPES if v == _type_value][0]
                 super_types_names.append(_type_name)
+
         return self.render_to_response({
             'super_types_names': super_types_names,
             'form': form,
