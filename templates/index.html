@@ -2,82 +2,86 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>ポケモンに有効なわざのタイプをしりたい</h1>
-    <a href="https://github.com/arvelt/pokemon-type-tool"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-    <!-- <div>
-        <div>
-            <form method='post'>
-                {% csrf_token %}
-                <select id='type1' name='type1'>
-                    {% for value, name in form.type1.field.choices %}
-                        {% if value != 99 %}
-                            <option value='{{value}}' {% if value == form.type1.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-
-                <select id='type2' name='type2'>
-                    {% for value, name in form.type1.field.choices %}
-                        <option value='{{value}}' {% if value == form.type2.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
-                    {% endfor %}
-                </select>
-                <input type='submit' value='このタイプに有効なタイプは？'></input>
-            </form>
+    <div class='container theme-showcase'>
+        <div class='jumbotron'>
+            <h2>ポケモンに有効なわざのタイプをしりたい</h2>
         </div>
-        <div>
-            選択したタイプに有効なわざは？
-            {% for name in super_types_names %}
-                <div>{{ name }}</div>
-            {% endfor %}
-        </div>
-    </div> -->
-
-    <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>なまえ</th>
-                    <th>タイプ１</th>
-                    <th>タイプ２</th>
-                    <th>HP</th>
-                    <th>こうげき</th>
-                    <th>ぼうぎょ</th>
-                    <th>とくこう</th>
-                    <th>とくぼう</th>
-                    <th>すばやさ</th>
-                    <th>ごうけい</th>
-                    <th>ゆうこうなタイプ</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for pokemon in pokemons %}
-                <tr>
-                    <td>{{pokemon.no}}</td>
-                    <td>{{pokemon.name}}</td>
-                    <td>{{pokemon.type1}}</td>
-                    <td>{{pokemon.type2}}</td>
-                    <td>{{pokemon.hp}}</td>
-                    <td>{{pokemon.attack}}</td>
-                    <td>{{pokemon.defence}}</td>
-                    <td>{{pokemon.sp_attack}}</td>
-                    <td>{{pokemon.sp_defence}}</td>
-                    <td>{{pokemon.speed}}</td>
-                    <td>{{pokemon.sum}}</td>
-                    <td>
-                        {% for name in pokemon.super_types %}
-                            {{name}}
+        <a href="https://github.com/arvelt/pokemon-type-tool"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+        <!-- <div>
+            <div>
+                <form method='post'>
+                    {% csrf_token %}
+                    <select id='type1' name='type1'>
+                        {% for value, name in form.type1.field.choices %}
+                            {% if value != 99 %}
+                                <option value='{{value}}' {% if value == form.type1.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
+                            {% endif %}
                         {% endfor %}
-                    </td>
-                </td>
+                    </select>
 
-                </tr>
+                    <select id='type2' name='type2'>
+                        {% for value, name in form.type1.field.choices %}
+                            <option value='{{value}}' {% if value == form.type2.value|add:0 %}selected='selected'{% endif %}>{{name}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type='submit' value='このタイプに有効なタイプは？'></input>
+                </form>
+            </div>
+            <div>
+                選択したタイプに有効なわざは？
+                {% for name in super_types_names %}
+                    <div>{{ name }}</div>
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            </div>
+        </div> -->
 
+        <div>
+            <table class='table table-striped'>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>なまえ</th>
+                        <th>タイプ１</th>
+                        <th>タイプ２</th>
+                        <th>HP</th>
+                        <th>こうげき</th>
+                        <th>ぼうぎょ</th>
+                        <th>とくこう</th>
+                        <th>とくぼう</th>
+                        <th>すばやさ</th>
+                        <th>ごうけい</th>
+                        <th>ゆうこうなタイプ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pokemon in pokemons %}
+                    <tr>
+                        <td>{{pokemon.no}}</td>
+                        <td>{{pokemon.name}}</td>
+                        <td>{{pokemon.type1}}</td>
+                        <td>{{pokemon.type2}}</td>
+                        <td>{{pokemon.hp}}</td>
+                        <td>{{pokemon.attack}}</td>
+                        <td>{{pokemon.defence}}</td>
+                        <td>{{pokemon.sp_attack}}</td>
+                        <td>{{pokemon.sp_defence}}</td>
+                        <td>{{pokemon.speed}}</td>
+                        <td>{{pokemon.sum}}</td>
+                        <td>
+                            {% for name in pokemon.super_types %}
+                                {{name}}
+                            {% endfor %}
+                        </td>
+                    </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
