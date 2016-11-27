@@ -105,23 +105,27 @@ class Type(object):
     return List of int
     """
     @classmethod
-    def get_super_effective(cls, *args):
-        length = len(args)
-        if length == 1:
-            target_type1 = args[0]
-            super_types = []
-            for _type in xrange(18):
-                if cls.check_effect( _type , target_type1) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1) == cls.DOUBLE_SUPER_EFFECT:
-                    super_types.append(_type)
-            return super_types
-        if length == 2:
-            target_type1 = args[0]
-            target_type2 = args[1]
-            super_types = []
-            for _type in xrange(18):
-                if cls.check_effect( _type , target_type1, target_type2) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1, target_type2) == cls.DOUBLE_SUPER_EFFECT:
-                    super_types.append(_type)
-            return super_types
+    def get_super_effective(cls, type1, type2):
+        if (0 < type2 and type2 < 17):
+            return cls._get_super_effective2(type1, type2)
+        else:
+            return cls._get_super_effective1(type1)
+
+    @classmethod
+    def _get_super_effective1(cls, target_type1):
+        super_types = []
+        for _type in xrange(18):
+            if cls.check_effect( _type , target_type1) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1) == cls.DOUBLE_SUPER_EFFECT:
+                super_types.append(_type)
+        return super_types
+
+    @classmethod
+    def _get_super_effective2(cls, target_type1, target_type2):
+        super_types = []
+        for _type in xrange(18):
+            if cls.check_effect( _type , target_type1, target_type2) == cls.SUPER_EFFECT or cls.check_effect(_type , target_type1, target_type2) == cls.DOUBLE_SUPER_EFFECT:
+                super_types.append(_type)
+        return super_types
 
     u"""
     return True or False or None
