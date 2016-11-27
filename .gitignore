@@ -1,6 +1,6 @@
 *.pyc
 .cache
-__pychache__
+__pycache__
 lib/
 gae/
 .DS_Store
