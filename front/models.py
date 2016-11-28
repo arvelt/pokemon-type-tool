@@ -197,6 +197,10 @@ class Pokemon(ndb.Model):
     super_types = ndb.StringProperty(repeated=True)
 
     @classmethod
+    def key_from_no_and_name(cls, no, name):
+        return ndb.Key(cls, no + '_' + name)
+
+    @classmethod
     def list(cls):
         if cls.exists():
             return cls.list_from_datastore()
@@ -228,7 +232,9 @@ class Pokemon(ndb.Model):
                         super_types_name.append(n)
                         break
 
-            items.append(cls(
+            key = cls.key_from_no_and_name(no, name)
+            entity = cls(
+                key=key,
                 no=int(no),
                 name=name,
                 type1=type1,
@@ -241,7 +247,9 @@ class Pokemon(ndb.Model):
                 speed=int(spd),
                 sum=int(_sum),
                 super_types=super_types_name
-            ))
+            )
+            entity.put_async()
+            items.append(entity)
         return items
 
     @classmethod
@@ -250,6 +258,5 @@ class Pokemon(ndb.Model):
         result = client.spreadsheets().values().get(
             spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
             range='sheet1',
-
         ).execute()
         return result.get('values', [])
