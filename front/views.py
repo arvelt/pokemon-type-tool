@@ -31,7 +31,7 @@ class IndexView(TemplateView):
             'type2': 99,
         })
 
-        pokemons = Pokemon.find_all_with_super_type()
+        pokemons = Pokemon.list()
 
         return self.render_to_response({
             'super_types_names': [],

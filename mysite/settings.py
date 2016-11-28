@@ -63,6 +63,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'google.appengine.ext.appstats.recording.AppStatsDjangoMiddleware',
 )
 
 ROOT_URLCONF = 'mysite.urls'

@@ -197,45 +197,30 @@ class Pokemon(ndb.Model):
     super_types = ndb.StringProperty(repeated=True)
 
     @classmethod
-    def find_all(cls):
-        client = build_client()
-        result = client.spreadsheets().values().get(
-            spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
-            range='sheet1',
-
-        ).execute()
-
-        items = []
-        for index, pkmn in enumerate(result.get('values', [])):
-            if index == 0:
-                continue
-            no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
-            items.append(cls(
-                no=int(no),
-                name=name,
-                type1=type1,
-                type2=type2,
-                hp=int(hp),
-                attack=int(atk),
-                defence=int(df),
-                sp_attack=int(spatk),
-                sp_defence=int(spdf),
-                speed=int(spd),
-                sum=int(_sum),
-            ))
-        return items
+    def key_from_no_and_name(cls, no, name):
+        return ndb.Key(cls, no + '_' + name)
 
     @classmethod
-    def find_all_with_super_type(cls):
-        client = build_client()
-        result = client.spreadsheets().values().get(
-            spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
-            range='sheet1',
+    def list(cls):
+        if cls.exists():
+            return cls.list_from_datastore()
+        else:
+            return cls.list_from_spreadsheet()
 
-        ).execute()
+    @classmethod
+    def exists(cls):
+        key = cls.key_from_no_and_name('1', u'フシギダネ')
+        if key.get():
+            return True
+        else:
+            return False
+
+    @classmethod
+    def list_from_spreadsheet(cls):
+        _list = cls._list_from_spreadsheet()
 
         items = []
-        for index, pkmn in enumerate(result.get('values', [])):
+        for index, pkmn in enumerate(_list):
             if index == 0:
                 continue
             no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
@@ -251,7 +236,9 @@ class Pokemon(ndb.Model):
                         super_types_name.append(n)
                         break
 
-            items.append(cls(
+            key = cls.key_from_no_and_name(no, name)
+            entity = cls(
+                key=key,
                 no=int(no),
                 name=name,
                 type1=type1,
@@ -264,8 +251,27 @@ class Pokemon(ndb.Model):
                 speed=int(spd),
                 sum=int(_sum),
                 super_types=super_types_name
-            ))
+            )
+            entity.put_async()
+            items.append(entity)
         return items
 
-class SericeAccountToken(ndb.Model):
-    credential = ndb.JsonProperty()
+    @classmethod
+    def _list_from_spreadsheet(cls):
+        client = build_client()
+        result = client.spreadsheets().values().get(
+            spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
+            range='sheet1',
+        ).execute()
+        return result.get('values', [])
+
+    @classmethod
+    def list_from_datastore(cls):
+        return cls._get_multi_async().get_result()
+
+    @classmethod
+    @ndb.tasklet
+    def _get_multi_async(cls):
+        keys = cls.query().order(+cls.no).fetch(keys_only=True)
+        entityes = yield ndb.get_multi_async(keys)
+        raise ndb.Return(entityes)
