@@ -209,7 +209,11 @@ class Pokemon(ndb.Model):
 
     @classmethod
     def exists(cls):
-        return False
+        key = cls.key_from_no_and_name('1', u'フシギダネ')
+        if key.get():
+            return True
+        else:
+            return False
 
     @classmethod
     def list_from_spreadsheet(cls):
@@ -260,3 +264,14 @@ class Pokemon(ndb.Model):
             range='sheet1',
         ).execute()
         return result.get('values', [])
+
+    @classmethod
+    def list_from_datastore(cls):
+        return cls._get_multi_async().get_result()
+
+    @classmethod
+    @ndb.tasklet
+    def _get_multi_async(cls):
+        keys = cls.query().order(+cls.no).fetch(keys_only=True)
+        entityes = yield ndb.get_multi_async(keys)
+        raise ndb.Return(entityes)
