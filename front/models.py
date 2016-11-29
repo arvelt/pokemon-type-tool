@@ -11,6 +11,9 @@ u"""
 (ポケモン)には効果がないみたいだ…：It doesn't affect (ポケモン)!
 """
 
+MAX_POKEMONS = 931  # 総数。フォルム違い、メガシンカ、アローラのすがた
+MAX_POKEMONS_NO = 802  # 全国図鑑
+
 TYPES = (
     (99, u'なし'),
     (0, u'ノーマル'),
@@ -197,8 +200,8 @@ class Pokemon(ndb.Model):
     super_types = ndb.StringProperty(repeated=True)
 
     @classmethod
-    def key_from_no_and_name(cls, no, name):
-        return ndb.Key(cls, no + '_' + name)
+    def key_from_id(cls, _id):
+        return ndb.Key(cls, str(_id))
 
     @classmethod
     def list(cls):
@@ -209,7 +212,7 @@ class Pokemon(ndb.Model):
 
     @classmethod
     def exists(cls):
-        key = cls.key_from_no_and_name('1', u'フシギダネ')
+        key = cls.key_from_id(1)
         if key.get():
             return True
         else:
@@ -223,7 +226,7 @@ class Pokemon(ndb.Model):
         for index, pkmn in enumerate(_list):
             if index == 0:
                 continue
-            no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
+            _id, no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
 
             _type1 = type_name_to_value(type1)
             _type2 = type_name_to_value(type2)
@@ -236,9 +239,8 @@ class Pokemon(ndb.Model):
                         super_types_name.append(n)
                         break
 
-            key = cls.key_from_no_and_name(no, name)
             entity = cls(
-                key=key,
+                id=_id,
                 no=int(no),
                 name=name,
                 type1=type1,
@@ -258,6 +260,7 @@ class Pokemon(ndb.Model):
 
     @classmethod
     def _list_from_spreadsheet(cls):
+        logging.debug('call _list_from_spreadsheet')
         client = build_client()
         result = client.spreadsheets().values().get(
             spreadsheetId='1o-EUyH_JOyn_obfq61MHGyjyQkvhHNCsdAt7P9okQDE',
@@ -267,11 +270,12 @@ class Pokemon(ndb.Model):
 
     @classmethod
     def list_from_datastore(cls):
+        logging.debug('call list_from_datastore')
         return cls._get_multi_async().get_result()
 
     @classmethod
     @ndb.tasklet
     def _get_multi_async(cls):
-        keys = cls.query().order(+cls.no).fetch(keys_only=True)
+        keys = [cls.key_from_id(v + 1) for v in xrange(MAX_POKEMONS)]
         entityes = yield ndb.get_multi_async(keys)
         raise ndb.Return(entityes)
