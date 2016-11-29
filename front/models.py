@@ -204,6 +204,11 @@ class Pokemon(ndb.Model):
         return ndb.Key(cls, str(_id))
 
     @classmethod
+    def get_by_id(cls, _id):
+        key = cls.key_from_id(_id)
+        return key.get()
+
+    @classmethod
     def list(cls):
         if cls.exists():
             return cls.list_from_datastore()
