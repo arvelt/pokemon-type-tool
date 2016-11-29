@@ -279,3 +279,20 @@ class Pokemon(ndb.Model):
         keys = [cls.key_from_id(v + 1) for v in xrange(MAX_POKEMONS)]
         entityes = yield ndb.get_multi_async(keys)
         raise ndb.Return(entityes)
+
+    def to_dict(self):
+        return {
+            'id': int(self.key.id()),
+            'no': self.no,
+            'name': self.name,
+            'type1': self.type1,
+            'type2': self.type2,
+            'hp': self.hp,
+            'attack': self.attack,
+            'defence': self.defence,
+            'sp_attack': self.sp_attack,
+            'sp_defence': self.sp_defence,
+            'speed': self.speed,
+            'sum': self.sum,
+            'super_types': self.super_types,
+            }
