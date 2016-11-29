@@ -209,7 +209,7 @@ class Pokemon(ndb.Model):
 
     @classmethod
     def exists(cls):
-        key = cls.key_from_no_and_name('1', u'フシギダネ')
+        key = ndb.Key(cls, 1)
         if key.get():
             return True
         else:
@@ -223,7 +223,7 @@ class Pokemon(ndb.Model):
         for index, pkmn in enumerate(_list):
             if index == 0:
                 continue
-            no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
+            _id, no, name, type1, type2, hp, atk, df, spatk, spdf, spd, _sum = pkmn
 
             _type1 = type_name_to_value(type1)
             _type2 = type_name_to_value(type2)
@@ -236,9 +236,8 @@ class Pokemon(ndb.Model):
                         super_types_name.append(n)
                         break
 
-            key = cls.key_from_no_and_name(no, name)
             entity = cls(
-                key=key,
+                id=_id,
                 no=int(no),
                 name=name,
                 type1=type1,
