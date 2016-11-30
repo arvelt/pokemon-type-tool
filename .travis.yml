@@ -1,7 +1,9 @@
 language: python
 python:
   - "2.7"
-install: "pip install -r requirements-vendor.txt -t lib/"
+install:
+  - "pip instlal -r requirements.txt"
+  - "pip install -r requirements-vendor.txt -t lib/"
 script: pytest
 deploy:
   provider: gae
