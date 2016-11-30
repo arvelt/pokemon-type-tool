@@ -1,0 +1,4 @@
+deploy:
+  provider: gae
+  keyfile: "pkmn-tool-secret.json.enc"
+  project: "pkmn-tool"
