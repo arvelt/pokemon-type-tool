@@ -36,6 +36,9 @@ handlers:
 automatic_scaling:
     max_idle_instances: 1
 
+env_variables:
+  DJANGO_SECRET_KEY: os.environ['DJANGO_SECRET_KEY']
+
 # Only pure Python libraries can be vendored
 # Python libraries that use C extensions can
 # only be included if they are part of the App Engine SDK
