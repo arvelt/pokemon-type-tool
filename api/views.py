@@ -26,7 +26,16 @@ class ListView(base.View):
 class GetView(base.View):
     def get(self, request, pokemon_id, *args, **kwargs):
         if not id_valid_id(pokemon_id):
-            return HttpResponseNotFound(json.dumps({'message': 'NotFound'}))
+            return HttpResponseNotFound(json.dumps({
+                'error': {
+                    'errors': [{
+                        'domain': 'global',
+                        'reason': 'notFound',
+                        'message': 'Not Found'
+                       }],
+                    'code': 404,
+                    'message': 'Not Found'
+                }}))
         entity = Pokemon.get_by_id(pokemon_id)
         res = entity.to_dict()
         return HttpResponse(json.dumps(res))
