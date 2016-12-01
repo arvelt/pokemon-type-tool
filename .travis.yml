@@ -22,3 +22,4 @@ deploy:
   skip_cleanup: true
   keyfile: pkmn-tool-secret.json
   project: pkmn-tool
+  version: 0-0-6
