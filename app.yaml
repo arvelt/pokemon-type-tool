@@ -17,8 +17,10 @@
 
 # [START django_app]
 runtime: python27
-api_version: 0-0-6
+api_version: 1
 threadsafe: yes
+
+version: 0-0-6
 
 libraries:
 - name: ssl
