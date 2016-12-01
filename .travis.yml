@@ -19,5 +19,6 @@ install:
 script: py.test front/tests/*
 deploy:
   provider: gae
-  keyfile: pkmn-tool-secret.json.enc
+  skip_cleanup: true
+  keyfile: pkmn-tool-secret.json
   project: pkmn-tool
