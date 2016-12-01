@@ -5,6 +5,7 @@ lib/
 gae/
 .DS_Store
 pkmn_tool_credential.py
+pkmn-tool-secret.json
 
 # local script
 run.sh

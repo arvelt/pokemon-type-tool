@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from front.models import Type
 
+
 class TestType(object):
     def test_table_super_effective(self):
         assert Type.type_table[Type.WATER][Type.FIRE] == 1
