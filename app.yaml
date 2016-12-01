@@ -17,7 +17,7 @@
 
 # [START django_app]
 runtime: python27
-api_version: 1
+api_version: 0-0-6
 threadsafe: yes
 
 libraries:
